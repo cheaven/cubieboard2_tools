@@ -1,0 +1,16 @@
+#!/bin/bash
+
+REPACK_DIR=$1
+REPACK_TMP_DIR=${REPACK_DIR}/tmp
+
+[ -d ${REPACK_TMP_DIR} ] && rm -rf ${REPACK_TMP_DIR}
+mkdir ${REPACK_TMP_DIR}
+
+gzip -dc ${REPACK_DIR}/rootfs_skel.cpio.gz |(cd ${REPACK_TMP_DIR}; cpio -i)
+cp ${REPACK_DIR}/*.ko ${REPACK_TMP_DIR}
+
+cd ${REPACK_TMP_DIR}
+find . |cpio -o -Hnewc |gzip > ${REPACK_DIR}/rootfs.cpio.gz
+cd -
+rm -rf ${REPACK_TMP_DIR}
+
