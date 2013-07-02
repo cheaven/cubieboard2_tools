@@ -27,6 +27,7 @@ make_rootfs()
     sudo tar xzf $rootfs
     if [ -d ./etc ]; then
         echo "Standard rootfs"
+	(cd ${ROOTFS_ADDON_DIR}/; tar -c *) |sudo tar -xv
         # do nothing
     elif [ -d ./binary/boot/filesystem.dir ]; then
         echo "Linaro rootfs"
